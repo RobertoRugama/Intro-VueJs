@@ -2,15 +2,22 @@
   <div id="app">
     <img src="./assets/logo.png">
     <h1> {{msg}}</h1>
+    <div>
+      <select v-model="selectedCountry">
+        <option v-for ="country in countries" v-bind:value="country.value"> {{ country.name }}</option>
+        option
+      </select>
+      
+    </div>
     <ul>
-      <li v-for="artist in artists"> {{artist.name}} </li>
-    </ul>
-   
-    
+      <artist v-for="artist in artists"
+      v-bind:artist = "artist"></artist>
+    </ul>    
   </div>
 </template>
 
 <script>
+import Artist from './components/Artist.vue'
 import getArtists from './api'
 export default {
   name: 'app',
@@ -18,15 +25,38 @@ export default {
     return {
       msg: 'Welcome a Music Last.FM',
 
-      artists: []
+      artists: [],
+      countries: [
+        { name: 'Nicaragua', value:'Nicaragua'},
+        { name: 'España', value:'Spain'},
+        { name: 'Costa Rica', value: 'Costa Rica'},
+        { name: 'Panama', value : 'Panama'},
+        { name: 'Colombia', value : 'Colombia'},
+        { name: 'Argentina', value : 'Argnetina'}
+
+      ],
+      selectedCountry: 'Nicaragua'
     }
   },
-  mounted: function(){
+  components: {
+    Artist
+  },
+  methods:{
+    refreshArtists(){
     const self = this
-    getArtists()
+    getArtists(this.selectedCountry)
       .then( function (artists) {
         self.artists = artists
       })
+    }
+  },
+  mounted: function(){
+    this.refreshArtists()
+  },
+  watch: {
+    selectedCountry: function(){
+      this.refreshArtists()
+    }
   }
 }
 </script>
