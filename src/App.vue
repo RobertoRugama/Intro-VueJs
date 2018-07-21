@@ -6,8 +6,8 @@
       <select v-model="selectedCountry">
         <option v-for ="country in countries" v-bind:value="country.value"> {{ country.name }}</option>
         option
-      </select>
-      
+      </select>  
+      <spinner v-show="loading"></spinner>    
     </div>
     <ul>
       <artist v-for="artist in artists"
@@ -18,7 +18,8 @@
 
 <script>
 import Artist from './components/Artist.vue'
-import getArtists from './api'
+import Spinner from './components/Spinner.vue'
+import getArtists from './api'  
 export default {
   name: 'app',
   data () {
@@ -35,17 +36,21 @@ export default {
         { name: 'Argentina', value : 'Argnetina'}
 
       ],
-      selectedCountry: 'Nicaragua'
+      selectedCountry: 'Nicaragua',
+      loading: true
     }
   },
   components: {
-    Artist
+    Artist,
+    Spinner
   },
   methods:{
     refreshArtists(){
     const self = this
+    this.loading = true
     getArtists(this.selectedCountry)
       .then( function (artists) {
+        self.loading = false
         self.artists = artists
       })
     }
