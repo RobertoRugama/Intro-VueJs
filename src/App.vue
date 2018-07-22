@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <img src="https://robertorugama.github.io/Intro-VueJs/dist/logo.png">
     <h1> {{msg}}</h1>
     <div>
       <select v-model="selectedCountry">
